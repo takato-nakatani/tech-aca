@@ -196,20 +196,23 @@ switch($_POST['button']){
 if(isset($_POST['square_root']))
 {
     $formula_str = implode('' , $formula_data);    //$formula_str：計算式の文字列
+    if($_SESSION['text'] != null){
+        if( ! (preg_match("/\./", $formula_str) || preg_match("/ \+ /", $formula_str) || preg_match("/ \- /", $formula_str) || preg_match("/ \* /", $formula_str) || preg_match("/ \/ /", $formula_str) ) )
+        {
 
-    if( ! (preg_match("/ \+ /", $formula_str) || preg_match("/ \- /", $formula_str) || preg_match("/ \* /", $formula_str) || preg_match("/ \/ /", $formula_str) ) )
-    {
+            $_SESSION['text'] = [];
+            $after_root = sqrt((float)$formula_str);
+            var_dump($after_root);
+            array_push($_SESSION['text'], "{$after_root}");
+            $formula = "√{$formula_str} = {$after_root}";
+            $history = store_record($formula);
+            $_SESSION['record'] = $history;
 
-        $_SESSION['text'] = [];
-        $after_root = sqrt((float)$formula_str);
-        var_dump($after_root);
-        array_push($_SESSION['text'], "{$after_root}");
-        $formula = "√{$formula_str} = {$after_root}";
-        $history = store_record($formula);
-        $_SESSION['record'] = $history;
-
-
+        }
     }
+
+
+
 }
 
 

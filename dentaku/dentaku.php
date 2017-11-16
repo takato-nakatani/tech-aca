@@ -176,7 +176,13 @@ switch($_POST['button']){
             $formula_data = button_data($buttonvalue_dot);
             $_SESSION['text'] = $formula_data;
             break;
-        }else{
+        }else if(end($_SESSION['text']) ==  "." || " + " || " - " || " * " || " / " )
+        {
+            var_dump($_SESSION['text']);
+            break;
+        }else
+        {
+
             $formula_data = button_data($buttonvalue_dot);
             $_SESSION['text'] = $formula_data;
 
@@ -711,3 +717,6 @@ if($_POST['reset']){
 </form>
 </body>
 </html>
+
+
+

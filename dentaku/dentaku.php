@@ -18,7 +18,8 @@ session_start();
     <button type="submit" name="button" value="1">１</button>
     <button type="submit" name="button" value="2">２</button>
     <button type="submit" name="button" value="3">３</button>
-    <button type="submit" name="calculation" value="divide">÷</button><br />
+    <button type="submit" name="calculation" value="divide">÷</button>
+    <button type="submit" name="square_root" value="root">√</button><br />
 
     <button type="submit" name="button" value="4">４</button>
     <button type="submit" name="button" value="5">５</button>
@@ -34,8 +35,8 @@ session_start();
     <button type="submit" name="button" value="w0">００</button>
     <button type="submit" name="button" value="dot">.</button>
     <button type="submit" name="calculation" value="plus">＋</button>
-    <input type ="submit" name = "result" value = "＝">
-    <input type ="submit" name = "reset" style = "background : Red" value = "ＡＣ"><br />
+    <button type ="submit" name = "result" value = "＝">＝</button>
+    <button type ="submit" name = "reset" style = "background : Red" value = "ＡＣ">ＡＣ</button><br />
 
 </form>
 
@@ -58,6 +59,15 @@ $formula_method = array();
 global $formula_str;
 
 var_dump($_SESSION['text']);
+
+
+
+
+
+
+
+
+
 
 //数字のボタンが押されたときの処理
 
@@ -180,16 +190,48 @@ switch($_POST['button']){
 
 
 
+
+
+//ルートのボタンが押されたときの処理
+if(isset($_POST['square_root']))
+{
+    $formula_str = implode('' , $formula_data);    //$formula_str：計算式の文字列
+
+    if( ! (preg_match("/ \+ /", $formula_str) || preg_match("/ \- /", $formula_str) || preg_match("/ \* /", $formula_str) || preg_match("/ \/ /", $formula_str) ) )
+    {
+
+        $_SESSION['text'] = [];
+        $after_root = sqrt((float)$formula_str);
+        var_dump($after_root);
+        array_push($_SESSION['text'], "{$after_root}");
+        $formula = "√{$formula_str} = {$after_root}";
+        $history = store_record($formula);
+        $_SESSION['record'] = $history;
+
+
+    }
+}
+
+
+
+
+
+
+
+
 //演算子のボタンが押されたときの処理
 global $formula;
 switch($_POST['calculation']){
 
 
     case "plus" :
+
         if($_SESSION['text'] == null){
             array_push($_SESSION['text'],"0");
         }
+
         $buttonvalue_cal = " + ";
+
         if(is_array($formula_data))
         {
             if(end($formula_data) === " + " ||end($formula_data) === " - " ||end($formula_data) === " * " ||end($formula_data) === " / "  )
@@ -277,6 +319,7 @@ switch($_POST['calculation']){
         }
 
         $buttonvalue_cal = " - ";
+
         if(is_array($formula_data))
         {
             if(end($formula_data) === " + " ||end($formula_data) === " - " ||end($formula_data) === " * " ||end($formula_data) === " / "  )
@@ -361,6 +404,7 @@ switch($_POST['calculation']){
         }
 
         $buttonvalue_cal = " * ";
+
         if(is_array($formula_data)){
             if(end($formula_data) === " + " ||end($formula_data) === " - " ||end($formula_data) === " * " ||end($formula_data) === " / "  )
             {
@@ -442,7 +486,9 @@ switch($_POST['calculation']){
         if($_SESSION['text'] == null){
             array_push($_SESSION['text'],"0");
         }
+
         $buttonvalue_cal = " / ";
+
         if(is_array($formula_data))
         {
             if(end($formula_data) === " + " ||end($formula_data) === " - " ||end($formula_data) === " * " ||end($formula_data) === " / "  )
@@ -537,66 +583,68 @@ if($_POST['result']){
         if(is_array($formula_data)){
             $formula_str = implode('' , $formula_data);  //$formula_str：計算式の文字列
         }
+        if(preg_match("/[^ ]$/",$formula_str)){     //計算式の最後が演算子の場合に「＝」が押されたらこのif文以下は実行されない。
+            if(preg_match("/ \+ /", $formula_str, $cal_method) || preg_match("/ \- /", $formula_str, $cal_method) || preg_match("/ \* /", $formula_str, $cal_method) || preg_match("/ \/ /", $formula_str, $cal_method)  )
+            {
 
-        if(preg_match("/ \+. /", $formula_str, $cal_method) || preg_match("/ \-. /", $formula_str, $cal_method) || preg_match("/ \*. /", $formula_str, $cal_method) || preg_match("/ \/. /", $formula_str, $cal_method)  )
-        {
+                switch($cal_method[0]){
+                    case " + " :
+                        $formula_num = explode(" + " , $formula_str);  //$formula_num：計算する数値をそれぞれ文字列で格納した配列
+                        $num1 = $formula_num[0];
+                        $num2 = $formula_num[1];
+                        $result = $formula_num[0] + $formula_num[1];
+                        $formula = "{$formula_num[0]} ＋ {$formula_num[1]} ＝ {$result}";
+                        $_SESSION['text'] = [];
+                        $_SESSION['text'] = "$result";
 
-            switch($cal_method[0]){
-                case " + " :
-                    $formula_num = explode(" + " , $formula_str);  //$formula_num：演算子と演算子の間の数値を文字列で格納した配列
-                    $num1 = $formula_num[0];
-                    $num2 = $formula_num[1];
-                    $result = $formula_num[0] + $formula_num[1];
-                    $formula = "{$formula_num[0]} ＋ {$formula_num[1]} ＝ {$result}";
-                    $_SESSION['text'] = [];
-                    $_SESSION['text'] = "$result";
-
-                    break;
-
-                case " - " :
-                    $formula_num = explode(" - " , $formula_str);
-                    $num1 = $formula_num[0];
-                    $num2 = $formula_num[1];
-                    $result = $formula_num[0] - $formula_num[1];
-                    $formula = "{$formula_num[0]} － {$formula_num[1]} ＝ {$result}";
-                    $_SESSION['text'] = [];
-                    $_SESSION['text'] = "$result";
-                    break;
-
-                case " * " :
-                    $formula_num = explode(" * " , $formula_str);
-                    $num1 = $formula_num[0];
-                    $num2 = $formula_num[1];
-                    $result = $formula_num[0] * $formula_num[1];
-                    $formula = "{$formula_num[0]} × {$formula_num[1]} ＝ {$result}";
-                    $_SESSION['text'] = [];
-                    $_SESSION['text'] = "$result";
-                    break;
-
-                case " / " :
-                    $formula_num = explode(" / " , $formula_str);
-                    $num1 = $formula_num[0];
-                    $num2 = $formula_num[1];
-                    if($num2 == "0"){
-                        $_SESSION['text'] = "ERROR";
                         break;
-                    }
-                    $result = $formula_num[0] / $formula_num[1];
-                    $formula = "{$formula_num[0]} ÷ {$formula_num[1]} ＝ {$result}";
-                    $_SESSION['text'] = [];
-                    $_SESSION['text'] = "$result";
-                    break;
+
+                    case " - " :
+                        $formula_num = explode(" - " , $formula_str);
+                        $num1 = $formula_num[0];
+                        $num2 = $formula_num[1];
+                        $result = $formula_num[0] - $formula_num[1];
+                        $formula = "{$formula_num[0]} － {$formula_num[1]} ＝ {$result}";
+                        $_SESSION['text'] = [];
+                        $_SESSION['text'] = "$result";
+                        break;
+
+                    case " * " :
+                        $formula_num = explode(" * " , $formula_str);
+                        $num1 = $formula_num[0];
+                        $num2 = $formula_num[1];
+                        $result = $formula_num[0] * $formula_num[1];
+                        $formula = "{$formula_num[0]} × {$formula_num[1]} ＝ {$result}";
+                        $_SESSION['text'] = [];
+                        $_SESSION['text'] = "$result";
+                        break;
+
+                    case " / " :
+                        $formula_num = explode(" / " , $formula_str);
+                        $num1 = $formula_num[0];
+                        $num2 = $formula_num[1];
+                        if($num2 == "0"){
+                            $_SESSION['text'] = "ERROR";
+                            break;
+                        }
+                        $result = $formula_num[0] / $formula_num[1];
+                        $formula = "{$formula_num[0]} ÷ {$formula_num[1]} ＝ {$result}";
+                        $_SESSION['text'] = [];
+                        $_SESSION['text'] = "$result";
+                        break;
+
+                }
+                if($_SESSION['text'] != "ERROR"){
+                    $history = store_record($formula);
+
+                    $_SESSION['record'] = $history;
+                }
 
             }
-            if($_SESSION['text'] != "ERROR"){
-                $history = store_record($formula);
 
-                $_SESSION['record'] = $history;
-            }
 
+            $history = $_SESSION['record'];
         }
-        $history = $_SESSION['record'];
-
 
 
     }
@@ -622,7 +670,7 @@ if($_POST['reset']){
        value = "<?php
 
        global $text;
-       if(($_POST['button'] || $_POST['calculation'] || $_POST['result']) && $_SESSION['text'] != null)
+       if(($_POST['button'] || $_POST['calculation'] || $_POST['result'] || $_POST['square_root']) && $_SESSION['text'] != null)
        {
            display_method($_SESSION['text']);
        }else{

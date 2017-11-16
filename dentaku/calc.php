@@ -56,82 +56,119 @@ $formula_data = array();
 $formula_data = $_SESSION['text'];
 $formula_method = array();
 global $formula_str;
+$_SESSION['text'] = array();
 
-var_dump($_SESSION['text']);
 
 //数字のボタンが押されたときの処理
 
 switch($_POST['button']){
     case "1" :
         $buttonvalue_1 = "1";
+        if($_SESSION['text'] === "0"){
+            $_SESSION['text'] = [];
+            $formula_data = button_data($buttonvalue_1);
+            $_SESSION['text'] = $formula_data;
+        }else{
 
-        $formula_data = button_data($buttonvalue_1);
-        $_SESSION['text'] = $formula_data;
-        var_dump($_SESSION['text']);
-
+            $formula_data = button_data($buttonvalue_1);
+            $_SESSION['text'] = $formula_data;
+            var_dump($_SESSION['text']);
+        }
         break;
 
     case "2":
         $buttonvalue_2 = "2";
-
-        $formula_data = button_data($buttonvalue_2);
-        $_SESSION['text'] = $formula_data;
-
+        if($_SESSION['text'] === "0"){
+            $_SESSION['text'] = [];
+            $formula_data = button_data($buttonvalue_2);
+            $_SESSION['text'] = $formula_data;
+        }else{
+            $formula_data = button_data($buttonvalue_2);
+            $_SESSION['text'] = $formula_data;
+        }
         break;
 
     case "3":
         $buttonvalue_3 = "3";
-
-        $formula_data = button_data($buttonvalue_3);
-        $_SESSION['text'] = $formula_data;
-
+        if($_SESSION['text'] === "0"){
+            $_SESSION['text'] = [];
+            $formula_data = button_data($buttonvalue_3);
+            $_SESSION['text'] = $formula_data;
+        }else{
+            $formula_data = button_data($buttonvalue_3);
+            $_SESSION['text'] = $formula_data;
+        }
         break;
 
     case "4":
         $buttonvalue_4 = "4";
-
-        $formula_data = button_data($buttonvalue_4);
-        $_SESSION['text'] = $formula_data;
-
+        if($_SESSION['text'] === "0"){
+            $_SESSION['text'] = [];
+            $formula_data = button_data($buttonvalue_4);
+            $_SESSION['text'] = $formula_data;
+        }else{
+            $formula_data = button_data($buttonvalue_4);
+            $_SESSION['text'] = $formula_data;
+        }
         break;
 
     case "5" :
         $buttonvalue_5 = "5";
-
-        $formula_data = button_data($buttonvalue_5);
-        $_SESSION['text'] = $formula_data;
-
+        if($_SESSION['text'] === "0"){
+            $_SESSION['text'] = [];
+            $formula_data = button_data($buttonvalue_5);
+            $_SESSION['text'] = $formula_data;
+        }else{
+            $formula_data = button_data($buttonvalue_5);
+            $_SESSION['text'] = $formula_data;
+        }
         break;
 
     case "6":
         $buttonvalue_6 = "6";
-
-        $formula_data = button_data($buttonvalue_6);
-        $_SESSION['text'] = $formula_data;
-
+        if($_SESSION['text'] === "0"){
+            $_SESSION['text'] = [];
+            $formula_data = button_data($buttonvalue_6);
+            $_SESSION['text'] = $formula_data;
+        }else{
+            $formula_data = button_data($buttonvalue_6);
+            $_SESSION['text'] = $formula_data;
+        }
         break;
 
     case "7":
         $buttonvalue_7 = "7";
-
-        $formula_data = button_data($buttonvalue_7);
-        $_SESSION['text'] = $formula_data;
-
+        if($_SESSION['text'] === "0"){
+            $_SESSION['text'] = [];
+            $formula_data = button_data($buttonvalue_7);
+            $_SESSION['text'] = $formula_data;
+        }else{
+            $formula_data = button_data($buttonvalue_7);
+            $_SESSION['text'] = $formula_data;
+        }
         break;
     case "8":
         $buttonvalue_8 = "8";
-
-        $formula_data = button_data($buttonvalue_8);
-        $_SESSION['text'] = $formula_data;
-
+        if($_SESSION['text'] === "0"){
+            $_SESSION['text'] = [];
+            $formula_data = button_data($buttonvalue_8);
+            $_SESSION['text'] = $formula_data;
+        }else{
+            $formula_data = button_data($buttonvalue_8);
+            $_SESSION['text'] = $formula_data;
+        }
         break;
 
     case "9" :
         $buttonvalue_9 = "9";
-
-        $formula_data = button_data($buttonvalue_9);
-        $_SESSION['text'] = $formula_data;
-
+        if($_SESSION['text'] === "0"){
+            $_SESSION['text'] = [];
+            $formula_data = button_data($buttonvalue_9);
+            $_SESSION['text'] = $formula_data;
+        }else{
+            $formula_data = button_data($buttonvalue_9);
+            $_SESSION['text'] = $formula_data;
+        }
         break;
 
     case "s0":
@@ -162,9 +199,6 @@ switch($_POST['button']){
 
         $buttonvalue_dot = ".";
         if($_SESSION['text'] == NULL){
-            array_push($_SESSION['text'],"0");
-            $formula_data = button_data($buttonvalue_dot);
-            $_SESSION['text'] = $formula_data;
             break;
         }else{
             $formula_data = button_data($buttonvalue_dot);
@@ -187,7 +221,8 @@ switch($_POST['calculation']){
 
     case "plus" :
         if($_SESSION['text'] == null){
-            array_push($_SESSION['text'],"0");
+            $_SESSION['text'] = "0";
+            break;
         }
         $buttonvalue_cal = " + ";
         if(is_array($formula_data))
@@ -273,7 +308,8 @@ switch($_POST['calculation']){
     case "minus":
 
         if($_SESSION['text'] == null){
-            array_push($_SESSION['text'],"0");
+            $_SESSION['text'] = "0";
+            break;
         }
 
         $buttonvalue_cal = " - ";
@@ -357,7 +393,8 @@ switch($_POST['calculation']){
     case "multiply":
 
         if($_SESSION['text'] == null){
-            array_push($_SESSION['text'],"0");
+            $_SESSION['text'] = "0";
+            break;
         }
 
         $buttonvalue_cal = " * ";
@@ -440,7 +477,8 @@ switch($_POST['calculation']){
     case "divide":
 
         if($_SESSION['text'] == null){
-            array_push($_SESSION['text'],"0");
+            $_SESSION['text'] = "0";
+            break;
         }
         $buttonvalue_cal = " / ";
         if(is_array($formula_data))
@@ -531,14 +569,14 @@ global $history;
 $history = array();
 if($_POST['result']){
 
-    if($_SESSION['text'] != null)
-    {
-
+    if($_SESSION['text'] == null){
+        $_SESSION['text'] = "0";
+    }else{
         if(is_array($formula_data)){
             $formula_str = implode('' , $formula_data);  //$formula_str：計算式の文字列
         }
 
-        if(preg_match("/ \+. /", $formula_str, $cal_method) || preg_match("/ \-. /", $formula_str, $cal_method) || preg_match("/ \*. /", $formula_str, $cal_method) || preg_match("/ \/. /", $formula_str, $cal_method)  )
+        if(preg_match("/ \+ /", $formula_str, $cal_method) || preg_match("/ \- /", $formula_str, $cal_method) || preg_match("/ \* /", $formula_str, $cal_method) || preg_match("/ \/ /", $formula_str, $cal_method)  )
         {
 
             switch($cal_method[0]){
@@ -622,7 +660,7 @@ if($_POST['reset']){
        value = "<?php
 
        global $text;
-       if(($_POST['button'] || $_POST['calculation'] || $_POST['result']) && $_SESSION['text'] != null)
+       if($_POST['button'] && ($_SESSION['text'] != NULL) || $_POST['calculation'] || $_POST['result'])
        {
            display_method($_SESSION['text']);
        }else{
@@ -640,7 +678,7 @@ if($_POST['reset']){
 
 
 
-<form>
+<form method = 'POST' action = "dentaku.php">
     計算履歴<br />
     <textarea name = "record" style = "font-size: 30px; text-align: center " cols = "40" rows = "5"><?php
 

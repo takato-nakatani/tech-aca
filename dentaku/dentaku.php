@@ -201,15 +201,21 @@ switch($_POST['button']){
 //ルートのボタンが押されたときの処理
 if(isset($_POST['square_root']))
 {
+
     $formula_str = implode('' , $formula_data);    //$formula_str：計算式の文字列
     if($_SESSION['text'] != null){
-        if( ! (preg_match("/\./", $formula_str) || preg_match("/ \+ /", $formula_str) || preg_match("/ \- /", $formula_str) || preg_match("/ \* /", $formula_str) || preg_match("/ \/ /", $formula_str) ) )
+        if( ! (preg_match("/ \+ /", $formula_str) || preg_match("/ \- /", $formula_str) || preg_match("/ \* /", $formula_str) || preg_match("/ \/ /", $formula_str) ) )
         {
 
             $_SESSION['text'] = [];
             $after_root = sqrt((float)$formula_str);
             var_dump($after_root);
-            array_push($_SESSION['text'], "{$after_root}");
+            $formula_data = explode("/\./",$after_root);
+            var_dump($formula_data);
+            foreach($formula_data as $value){
+                array_push($_SESSION['text'], $value);
+            }
+            var_dump($_SESSION['text']);
             $formula = "√{$formula_str} = {$after_root}";
             $history = store_record($formula);
             $_SESSION['record'] = $history;
@@ -720,3 +726,4 @@ if($_POST['reset']){
 
 
 
+小数点の扱い、面白い機能、西岡さんに言われたエラー処理。

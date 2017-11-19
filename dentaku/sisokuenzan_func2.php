@@ -6,13 +6,11 @@
             $num_array = array();
             $num_array[] = $_SESSION['text']; //配列に現在の履歴を代入
             $num_array[] = $button;  //今回の数値を最後列に格納
-            var_dump($num_array);
         }else
         {
             //push_array関数が使えるかも
             $num_array = $_SESSION['text']; //配列に現在の履歴を代入
             $num_array[] = $button;  //今回の数値を最後列に格納
-            var_dump($num_array);
         }
 
         //50文字以上は読み込めないように制御
@@ -29,9 +27,7 @@
             if(is_string($_SESSION['record'])){
                 $record_array = array();
                 $record_array[] = $_SESSION['record']; //配列に現在の履歴を代入
-                var_dump($record_array);
                 $record_array[] = $new_formula;  //今回の数値を最後列に格納
-                var_dump($record_array);
             }else{
                 $record_array = $_SESSION['record']; //配列に現在の履歴を代入
 

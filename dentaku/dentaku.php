@@ -72,9 +72,12 @@ var_dump($_SESSION['text']);
 //数字のボタンが押されたときの処理
 
 switch($_POST['button']){
+
     case "1" :
         $buttonvalue_1 = "1";
-
+        if($_SESSION['text'] == "0"){
+            $_SESSION['text'] = [];
+        }
         $formula_data = button_data($buttonvalue_1);
         $_SESSION['text'] = $formula_data;
         var_dump($_SESSION['text']);
@@ -83,7 +86,9 @@ switch($_POST['button']){
 
     case "2":
         $buttonvalue_2 = "2";
-
+        if($_SESSION['text'] == "0"){
+            $_SESSION['text'] = [];
+        }
         $formula_data = button_data($buttonvalue_2);
         $_SESSION['text'] = $formula_data;
 
@@ -91,7 +96,9 @@ switch($_POST['button']){
 
     case "3":
         $buttonvalue_3 = "3";
-
+        if($_SESSION['text'] == "0"){
+            $_SESSION['text'] = [];
+        }
         $formula_data = button_data($buttonvalue_3);
         $_SESSION['text'] = $formula_data;
 
@@ -99,7 +106,9 @@ switch($_POST['button']){
 
     case "4":
         $buttonvalue_4 = "4";
-
+        if($_SESSION['text'] == "0"){
+            $_SESSION['text'] = [];
+        }
         $formula_data = button_data($buttonvalue_4);
         $_SESSION['text'] = $formula_data;
 
@@ -107,7 +116,9 @@ switch($_POST['button']){
 
     case "5" :
         $buttonvalue_5 = "5";
-
+        if($_SESSION['text'] == "0"){
+            $_SESSION['text'] = [];
+        }
         $formula_data = button_data($buttonvalue_5);
         $_SESSION['text'] = $formula_data;
 
@@ -115,7 +126,9 @@ switch($_POST['button']){
 
     case "6":
         $buttonvalue_6 = "6";
-
+        if($_SESSION['text'] == "0"){
+            $_SESSION['text'] = [];
+        }
         $formula_data = button_data($buttonvalue_6);
         $_SESSION['text'] = $formula_data;
 
@@ -123,14 +136,18 @@ switch($_POST['button']){
 
     case "7":
         $buttonvalue_7 = "7";
-
+        if($_SESSION['text'] == "0"){
+            $_SESSION['text'] = [];
+        }
         $formula_data = button_data($buttonvalue_7);
         $_SESSION['text'] = $formula_data;
 
         break;
     case "8":
         $buttonvalue_8 = "8";
-
+        if($_SESSION['text'] == "0"){
+            $_SESSION['text'] = [];
+        }
         $formula_data = button_data($buttonvalue_8);
         $_SESSION['text'] = $formula_data;
 
@@ -138,7 +155,9 @@ switch($_POST['button']){
 
     case "9" :
         $buttonvalue_9 = "9";
-
+        if($_SESSION['text'] == "0"){
+            $_SESSION['text'] = [];
+        }
         $formula_data = button_data($buttonvalue_9);
         $_SESSION['text'] = $formula_data;
 
@@ -146,7 +165,9 @@ switch($_POST['button']){
 
     case "s0":
         $buttonvalue_10 = "0";
-
+        if($_SESSION['text'] == "0"){
+            $_SESSION['text'] = [];
+        }
         if($_SESSION['text'] == NULL){
             break;
         }else{
@@ -159,6 +180,9 @@ switch($_POST['button']){
     case "w0":
 
         $buttonvalue_11 = "00";
+        if($_SESSION['text'] == "0"){
+            $_SESSION['text'] = [];
+        }
         if($_SESSION['text'] == NULL){
             break;
         }else{
@@ -169,25 +193,23 @@ switch($_POST['button']){
         break;
 
     case "dot":
-
         $buttonvalue_dot = ".";
         if($_SESSION['text'] == NULL){
             array_push($_SESSION['text'],"0");
             $formula_data = button_data($buttonvalue_dot);
             $_SESSION['text'] = $formula_data;
             break;
-        }else if(end($_SESSION['text']) ==  "." || " + " || " - " || " * " || " / " )
+        }else if(end($_SESSION['text']) === "." || end($_SESSION['text']) === " + " || end($_SESSION['text']) === " - " || end($_SESSION['text']) === " * " || end($_SESSION['text']) === " / ")
         {
-            var_dump($_SESSION['text']);
             break;
         }else
         {
 
             $formula_data = button_data($buttonvalue_dot);
             $_SESSION['text'] = $formula_data;
-
+            break;
         }
-        break;
+
 
 }
 
@@ -209,13 +231,10 @@ if(isset($_POST['square_root']))
 
             $_SESSION['text'] = [];
             $after_root = sqrt((float)$formula_str);
-            var_dump($after_root);
             $formula_data = explode("/\./",$after_root);
-            var_dump($formula_data);
             foreach($formula_data as $value){
                 array_push($_SESSION['text'], $value);
             }
-            var_dump($_SESSION['text']);
             $formula = "√{$formula_str} = {$after_root}";
             $history = store_record($formula);
             $_SESSION['record'] = $history;
@@ -267,12 +286,16 @@ switch($_POST['calculation']){
                     $formula_num = explode(" + " , $formula_str);  //$formula_num：演算子と演算子の間の数値を文字列で格納した配列
                     $num1 = $formula_num[0];
                     $num2 = $formula_num[1];
-                    var_dump($num2);
+                    preg_match_all("/\./", $formula_num[0], $count_dot1);
+                    preg_match_all("/\./", $formula_num[1], $count_dot2);
+                    if(count($count_dot1[0]) > 1 || count($count_dot2[0]) > 1){
+                        $_SESSION['text'] = "ERROR";
+                        break 2;
+                    }
                     $result = $formula_num[0] + $formula_num[1];
                     $formula = "{$formula_num[0]} ＋ {$formula_num[1]} ＝ {$result}";
                     $history = store_record($formula);
                     $_SESSION['record'] = $history;
-                    var_dump($history);
                     $_SESSION['text'] = [];
                     $_SESSION['text'] = "$result";
                     break;
@@ -281,6 +304,12 @@ switch($_POST['calculation']){
                     $formula_num = explode(" - " , $formula_str);
                     $num1 = $formula_num[0];
                     $num2 = $formula_num[1];
+                    preg_match_all("/\./", $formula_num[0], $count_dot1);
+                    preg_match_all("/\./", $formula_num[1], $count_dot2);
+                    if(count($count_dot1[0]) > 1 || count($count_dot2[0]) > 1){
+                        $_SESSION['text'] = "ERROR";
+                        break 2;
+                    }
                     $result = $formula_num[0] - $formula_num[1];
                     $formula = "{$formula_num[0]} － {$formula_num[1]} ＝ {$result}";
                     $history = store_record($formula);
@@ -293,6 +322,12 @@ switch($_POST['calculation']){
                     $formula_num = explode(" * " , $formula_str);
                     $num1 = $formula_num[0];
                     $num2 = $formula_num[1];
+                    preg_match_all("/\./", $formula_num[0], $count_dot1);
+                    preg_match_all("/\./", $formula_num[1], $count_dot2);
+                    if(count($count_dot1[0]) > 1 || count($count_dot2[0]) > 1){
+                        $_SESSION['text'] = "ERROR";
+                        break 2;
+                    }
                     $result = $formula_num[0] * $formula_num[1];
                     $formula = "{$formula_num[0]} × {$formula_num[1]} ＝ {$result}";
                     $history = store_record($formula);
@@ -306,6 +341,12 @@ switch($_POST['calculation']){
                     $num1 = $formula_num[0];
                     $num2 = $formula_num[1];
                     if($num2 == "0"){
+                        $_SESSION['text'] = "ERROR";
+                        break 2;
+                    }
+                    preg_match_all("/\./", $formula_num[0], $count_dot1);
+                    preg_match_all("/\./", $formula_num[1], $count_dot2);
+                    if(count($count_dot1[0]) > 1 || count($count_dot2[0]) > 1){
                         $_SESSION['text'] = "ERROR";
                         break 2;
                     }
@@ -354,6 +395,12 @@ switch($_POST['calculation']){
                     $formula_num = explode(" + " , $formula_str);  //$formula_num：演算子と演算子の間の数値を文字列で格納した配列
                     $num1 = $formula_num[0];
                     $num2 = $formula_num[1];
+                    preg_match_all("/\./", $formula_num[0], $count_dot1);
+                    preg_match_all("/\./", $formula_num[1], $count_dot2);
+                    if(count($count_dot1[0]) > 1 || count($count_dot2[0]) > 1){
+                        $_SESSION['text'] = "ERROR";
+                        break 2;
+                    }
                     $result = $formula_num[0] + $formula_num[1];
                     $formula = "{$formula_num[0]} ＋ {$formula_num[1]} ＝ {$result}";
                     $history = store_record($formula);
@@ -366,6 +413,12 @@ switch($_POST['calculation']){
                     $formula_num = explode(" - " , $formula_str);
                     $num1 = $formula_num[0];
                     $num2 = $formula_num[1];
+                    preg_match_all("/\./", $formula_num[0], $count_dot1);
+                    preg_match_all("/\./", $formula_num[1], $count_dot2);
+                    if(count($count_dot1[0]) > 1 || count($count_dot2[0]) > 1){
+                        $_SESSION['text'] = "ERROR";
+                        break 2;
+                    }
                     $result = $formula_num[0] - $formula_num[1];
                     $formula = "{$formula_num[0]} － {$formula_num[1]} ＝ {$result}";
                     $history = store_record($formula);
@@ -378,6 +431,12 @@ switch($_POST['calculation']){
                     $formula_num = explode(" * " , $formula_str);
                     $num1 = $formula_num[0];
                     $num2 = $formula_num[1];
+                    preg_match_all("/\./", $formula_num[0], $count_dot1);
+                    preg_match_all("/\./", $formula_num[1], $count_dot2);
+                    if(count($count_dot1[0]) > 1 || count($count_dot2[0]) > 1){
+                        $_SESSION['text'] = "ERROR";
+                        break 2;
+                    }
                     $result = $formula_num[0] * $formula_num[1];
                     $formula = "{$formula_num[0]} × {$formula_num[1]} ＝ {$result}";
                     $history = store_record($formula);
@@ -391,6 +450,12 @@ switch($_POST['calculation']){
                     $num1 = $formula_num[0];
                     $num2 = $formula_num[1];
                     if($num2 == "0"){
+                        $_SESSION['text'] = "ERROR";
+                        break 2;
+                    }
+                    preg_match_all("/\./", $formula_num[0], $count_dot1);
+                    preg_match_all("/\./", $formula_num[1], $count_dot2);
+                    if(count($count_dot1[0]) > 1 || count($count_dot2[0]) > 1){
                         $_SESSION['text'] = "ERROR";
                         break 2;
                     }
@@ -438,6 +503,12 @@ switch($_POST['calculation']){
                     $formula_num = explode(" + " , $formula_str);  //$formula_num：演算子と演算子の間の数値を文字列で格納した配列
                     $num1 = $formula_num[0];
                     $num2 = $formula_num[1];
+                    preg_match_all("/\./", $formula_num[0], $count_dot1);
+                    preg_match_all("/\./", $formula_num[1], $count_dot2);
+                    if(count($count_dot1[0]) > 1 || count($count_dot2[0]) > 1){
+                        $_SESSION['text'] = "ERROR";
+                        break 2;
+                    }
                     $result = $formula_num[0] + $formula_num[1];
                     $formula = "{$formula_num[0]} ＋ {$formula_num[1]} ＝ {$result}";
                     $history = store_record($formula);
@@ -450,6 +521,12 @@ switch($_POST['calculation']){
                     $formula_num = explode(" - " , $formula_str);
                     $num1 = $formula_num[0];
                     $num2 = $formula_num[1];
+                    preg_match_all("/\./", $formula_num[0], $count_dot1);
+                    preg_match_all("/\./", $formula_num[1], $count_dot2);
+                    if(count($count_dot1[0]) > 1 || count($count_dot2[0]) > 1){
+                        $_SESSION['text'] = "ERROR";
+                        break 2;
+                    }
                     $result = $formula_num[0] - $formula_num[1];
                     $formula = "{$formula_num[0]} － {$formula_num[1]} ＝ {$result}";
                     $history = store_record($formula);
@@ -462,6 +539,12 @@ switch($_POST['calculation']){
                     $formula_num = explode(" * " , $formula_str);
                     $num1 = $formula_num[0];
                     $num2 = $formula_num[1];
+                    preg_match_all("/\./", $formula_num[0], $count_dot1);
+                    preg_match_all("/\./", $formula_num[1], $count_dot2);
+                    if(count($count_dot1[0]) > 1 || count($count_dot2[0]) > 1){
+                        $_SESSION['text'] = "ERROR";
+                        break 2;
+                    }
                     $result = $formula_num[0] * $formula_num[1];
                     $formula = "{$formula_num[0]} × {$formula_num[1]} ＝ {$result}";
                     $history = store_record($formula);
@@ -475,6 +558,12 @@ switch($_POST['calculation']){
                     $num1 = $formula_num[0];
                     $num2 = $formula_num[1];
                     if($num2 == "0"){
+                        $_SESSION['text'] = "ERROR";
+                        break 2;
+                    }
+                    preg_match_all("/\./", $formula_num[0], $count_dot1);
+                    preg_match_all("/\./", $formula_num[1], $count_dot2);
+                    if(count($count_dot1[0]) > 1 || count($count_dot2[0]) > 1){
                         $_SESSION['text'] = "ERROR";
                         break 2;
                     }
@@ -523,7 +612,12 @@ switch($_POST['calculation']){
                     $formula_num = explode(" + " , $formula_str);  //$formula_num：演算子と演算子の間の数値を文字列で格納した配列
                     $num1 = $formula_num[0];
                     $num2 = $formula_num[1];
-
+                    preg_match_all("/\./", $formula_num[0], $count_dot1);
+                    preg_match_all("/\./", $formula_num[1], $count_dot2);
+                    if(count($count_dot1[0]) > 1 || count($count_dot2[0]) > 1){
+                        $_SESSION['text'] = "ERROR";
+                        break 2;
+                    }
                     $result = $formula_num[0] + $formula_num[1];
                     $formula = "{$formula_num[0]} ＋ {$formula_num[1]} ＝ {$result}";
                     $history = store_record($formula);
@@ -536,6 +630,12 @@ switch($_POST['calculation']){
                     $formula_num = explode(" - " , $formula_str);
                     $num1 = $formula_num[0];
                     $num2 = $formula_num[1];
+                    preg_match_all("/\./", $formula_num[0], $count_dot1);
+                    preg_match_all("/\./", $formula_num[1], $count_dot2);
+                    if(count($count_dot1[0]) > 1 || count($count_dot2[0]) > 1){
+                        $_SESSION['text'] = "ERROR";
+                        break 2;
+                    }
                     $result = $formula_num[0] - $formula_num[1];
                     $formula = "{$formula_num[0]} － {$formula_num[1]} ＝ {$result}";
                     $history = store_record($formula);
@@ -548,6 +648,12 @@ switch($_POST['calculation']){
                     $formula_num = explode(" * " , $formula_str);
                     $num1 = $formula_num[0];
                     $num2 = $formula_num[1];
+                    preg_match_all("/\./", $formula_num[0], $count_dot1);
+                    preg_match_all("/\./", $formula_num[1], $count_dot2);
+                    if(count($count_dot1[0]) > 1 || count($count_dot2[0]) > 1){
+                        $_SESSION['text'] = "ERROR";
+                        break 2;
+                    }
                     $result = $formula_num[0] * $formula_num[1];
                     $formula = "{$formula_num[0]} × {$formula_num[1]} ＝ {$result}";
                     $history = store_record($formula);
@@ -561,6 +667,12 @@ switch($_POST['calculation']){
                     $num1 = $formula_num[0];
                     $num2 = $formula_num[1];
                     if($num2 == "0"){
+                        $_SESSION['text'] = "ERROR";
+                        break 2;
+                    }
+                    preg_match_all("/\./", $formula_num[0], $count_dot1);
+                    preg_match_all("/\./", $formula_num[1], $count_dot2);
+                    if(count($count_dot1[0]) > 1 || count($count_dot2[0]) > 1){
                         $_SESSION['text'] = "ERROR";
                         break 2;
                     }
@@ -607,6 +719,12 @@ if($_POST['result']){
                         $formula_num = explode(" + " , $formula_str);  //$formula_num：計算する数値をそれぞれ文字列で格納した配列
                         $num1 = $formula_num[0];
                         $num2 = $formula_num[1];
+                        preg_match_all("/\./", $formula_num[0], $count_dot1);
+                        preg_match_all("/\./", $formula_num[1], $count_dot2);
+                        if(count($count_dot1[0]) > 1 || count($count_dot2[0]) > 1){
+                            $_SESSION['text'] = "ERROR";
+                            break;
+                        }
                         $result = $formula_num[0] + $formula_num[1];
                         $formula = "{$formula_num[0]} ＋ {$formula_num[1]} ＝ {$result}";
                         $_SESSION['text'] = [];
@@ -618,6 +736,12 @@ if($_POST['result']){
                         $formula_num = explode(" - " , $formula_str);
                         $num1 = $formula_num[0];
                         $num2 = $formula_num[1];
+                        preg_match_all("/\./", $formula_num[0], $count_dot1);
+                        preg_match_all("/\./", $formula_num[1], $count_dot2);
+                        if(count($count_dot1[0]) > 1 || count($count_dot2[0]) > 1){
+                            $_SESSION['text'] = "ERROR";
+                            break;
+                        }
                         $result = $formula_num[0] - $formula_num[1];
                         $formula = "{$formula_num[0]} － {$formula_num[1]} ＝ {$result}";
                         $_SESSION['text'] = [];
@@ -628,6 +752,12 @@ if($_POST['result']){
                         $formula_num = explode(" * " , $formula_str);
                         $num1 = $formula_num[0];
                         $num2 = $formula_num[1];
+                        preg_match_all("/\./", $formula_num[0], $count_dot1);
+                        preg_match_all("/\./", $formula_num[1], $count_dot2);
+                        if(count($count_dot1[0]) > 1 || count($count_dot2[0]) > 1){
+                            $_SESSION['text'] = "ERROR";
+                            break;
+                        }
                         $result = $formula_num[0] * $formula_num[1];
                         $formula = "{$formula_num[0]} × {$formula_num[1]} ＝ {$result}";
                         $_SESSION['text'] = [];
@@ -639,6 +769,12 @@ if($_POST['result']){
                         $num1 = $formula_num[0];
                         $num2 = $formula_num[1];
                         if($num2 == "0"){
+                            $_SESSION['text'] = "ERROR";
+                            break;
+                        }
+                        preg_match_all("/\./", $formula_num[0], $count_dot1);
+                        preg_match_all("/\./", $formula_num[1], $count_dot2);
+                        if(count($count_dot1[0]) > 1 || count($count_dot2[0]) > 1){
                             $_SESSION['text'] = "ERROR";
                             break;
                         }
@@ -727,3 +863,4 @@ if($_POST['reset']){
 
 
 小数点の扱い、面白い機能、西岡さんに言われたエラー処理。
+小数点：一つの数字に二つ以上ある場合と、「 + 」などの文字の後の小数点の扱いについて。

@@ -231,7 +231,8 @@ if(isset($_POST['square_root']))
 
             $_SESSION['text'] = [];
             $after_root = sqrt((float)$formula_str);
-            $formula_data = explode("/\./",$after_root);
+            $formula_data = explode("/\./", $after_root);
+            var_dump($formula_data);
             foreach($formula_data as $value){
                 array_push($_SESSION['text'], $value);
             }

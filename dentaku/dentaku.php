@@ -132,6 +132,7 @@ if($_POST['reset'])
     $_SESSION['text'] = [];
 }
 ?>
+
 <input type = text name = "text" size = "50" style = "text-align : left; font-size: 30px; "
        value = "<?php
        if(($_POST['numbutton'] || $_POST['zerobutton'] === "0" || $_POST['zerobutton'] === "00" || $_POST['dotbutton'] || $_POST['calculation'] || $_POST['result'] || $_POST['square_root']) && $_SESSION['text'] != null){

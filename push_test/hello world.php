@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8" />
-    <title>四則演算</title>
+    <title>HELLO WORLD</title>
 </head>
 <body>
 <?php

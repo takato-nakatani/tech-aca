@@ -18,30 +18,32 @@
 
 </form>
 <?php
+    if($_POST['namebox'] && $_POST['contribution']){
+        try{
+            $db = getDb();
+            $ins = $db -> prepare('INSERT INTO post_table(name, contents) VALUES(:username, :usercontents)');
+            $ins -> bindValue(':username', e($_POST['namebox']));
+            $ins -> bindValue(':usercontents', e($_POST['contribution']));
+            $ins -> execute();
 
-    try{
-        $db = getDb();
-        $ins = $db -> prepare('INSERT INTO post_table(name, contents) VALUES(:username, :usercontents)');
-        $ins -> bindValue(':username', e($_POST['namebox']));
-        $ins -> bindValue(':usercontents', e($_POST['contribution']));
-        $ins -> execute();
 
+            $out = $db -> prepare('SELECT * FROM post_table ORDER BY id DESC');
+            $out -> execute();
+            while($data = $out -> fetch(PDO::FETCH_ASSOC)){
+?>
+                <span style = "color:Red"><?php   echo(e($data['name']."　さんの投稿"));    ?></span>
+                <?php
+                echo nl2br("\n");
+                echo(nl2br(e($data['contents'])));
+                echo nl2br("\n\n");
 
-        $out = $db -> prepare('SELECT * FROM post_table ORDER BY id DESC');
-        $out -> execute();
-        while($data = $out -> fetch(PDO::FETCH_ASSOC)){?>
-<td><?php
-            echo(e($data['name']."　さんの投稿"));
-            echo nl2br("\n");
-            echo(nl2br(e($data['contents'])));
-            echo nl2br("\n\n");
-    ?>
-</td><?php
+            }
+            $db = NULL;
+        }catch(PDOException $e){
+            die("エラーメッセージ：{$e -> getMessage()}");
         }
-        $db = NULL;
-    }catch(PDOException $e){
-        die("エラーメッセージ：{$e -> getMessage()}");
     }
+
 
 
 

@@ -22,9 +22,10 @@
 
 
 
-    if(isset($_POST['namebox']) && isset($_POST['contribution'])){
+
         try{
             $db = getDb();
+            if(isset($_POST['namebox']) && isset($_POST['contribution'])){
             if(!(empty($_POST['namebox']) || empty($_POST['contribution']))){
 
                 $db -> beginTransaction();
@@ -34,7 +35,7 @@
                 $ins -> execute();
                 $db -> commit();
             }
-
+            }
             // $db -> beginTransaction();
             $out = $db -> prepare('SELECT * FROM post_table ORDER BY id DESC');
             $out -> execute();
@@ -58,7 +59,7 @@
             $db -> rollback();
             die("エラーメッセージ：{$e -> getMessage()}");
         }
-    }
+
 
 
 

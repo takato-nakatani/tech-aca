@@ -1,14 +1,4 @@
 <?php
-    require_once 'Encode.php';
-?>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset = "UTF-8" />
-    <title>掲示板1</title>
-</head>
-<body>
-<?php
 
 function getDb(){
     $dsn = 'mysql:dbname=board1_db;host=127.0.0.1;charset=utf8';
@@ -22,6 +12,3 @@ function getDb(){
 }
 
 ?>
-
-</body>
-</html>

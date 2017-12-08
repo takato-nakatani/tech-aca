@@ -1,6 +1,7 @@
 <?php
 require_once 'DbManager2.php';
 require_once 'Encode.php';
+require_once 'UserManager.php';
 ?>
 
 <!DOCTYPE html>
@@ -30,9 +31,20 @@ require_once 'Encode.php';
             if(!(empty($_POST['username']) || empty($_POST['userpass']))){
                 $user_name = $_POST['username'];
                 $user_pass = $_POST['userpass'];
-                $db = new use_db();
-                $db_connect = $db -> GetDb();
-                $db -> insert_user('INSERT INTO member_table(name, password) VALUES(:username, :userpass)', $user_name, $user_pass);
+                $decision = Duplication_Check($user_name, $user_pass);
+                if($decision){
+                    $db = GetDB();
+                    $statement = 'INSERT INTO member_table(name, password) VALUES(:username, :userpass)';
+                    insert_user($statement, $user_name, $user_pass);
+                    header('Location: http://localhost/selfphp2/Keiziban2/RegistrationCompletion.php');
+                }
+
+            }else if(empty($_POST['username']) && empty($_POST['userpass'])){
+                echo('ユーザ名とパスワードを入力してください。');
+            }else if(empty($_POST['username'])){
+                echo('ユーザ名を入力してください。');
+            }else{
+                echo('パスワードを入力してください。');
             }
         }
     }

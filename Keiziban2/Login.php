@@ -1,6 +1,8 @@
 <?php
-require_once 'DbManager2.php';
-require_once 'Encode.php';
+    session_start();
+    require_once 'DbManager2.php';
+    require_once 'Encode.php';
+    require_once 'UserManager.php';
 ?>
 
 <!DOCTYPE html>
@@ -10,53 +12,46 @@ require_once 'Encode.php';
     <title>Login画面</title>
 </head>
 <body>
-<form method = "POST" action = "Keiziban2.php">
+<form method = "POST" action = "Login.php">
     <label>ユーザ名：</label>
-    <input id = 'nametextbox' type = 'text' name = 'name' size = '15'><br />
+    <input id = 'nametextbox' type = 'text' name = 'Loginname' size = '15'><br />
 
     <label>パスワード：</label>
-    <input id = 'passwordtextbox' type = 'text' name = 'password' size = '30'><br />
+    <input id = 'passwordtextbox' type = 'text' name = 'Loginpass' size = '30'><br />
 
     <input type = 'submit' name = 'Loginbutton' value = 'ログイン'>
-
+</form>
+<form method = "POST" action = "Registration.php">
+    <p>まだ新規登録されていない方は以下の＜新規登録＞ボタンより新規登録を行ってください。</p>
+    <input type = 'submit' name = 'NewRegistration' value = '新規登録'>
 </form>
 <?php
 
 
 
 
-try{
+    if(isset($_POST['Loginbutton'])){
+        if(isset($_POST['Loginname']) && isset($_POST['Loginpass'])){
+            if(!(empty($_POST['Loginname']) || empty($_POST['Loginpass']))){
+                $LoginName = $_POST['Loginname'];
+                $LoginPass = $_POST['Loginpass'];
+                $decision = Login_Certification($LoginName, $LoginPass);
+                if($decision){
+                    header('Location: http://localhost/selfphp2/Keiziban2/Keiziban2.php');
+                }else{
+                    echo('ユーザ名またはパスワードが間違っています。');
+                }
 
-    $db = getDb();
-    if(isset($_POST['name']) && isset($_POST['password'])){
-        if(!(empty($_POST['namebox']) || empty($_POST['contribution']))){
 
-
+            }else if(empty($_POST['Loginname']) && empty($_POST['Loginpass'])){
+                echo('ユーザ名とパスワードを入力してください。');
+            }else if(empty($_POST['Loginname'])){
+                echo('ユーザ名を入力してください。');
+            }else{
+                echo('パスワードを入力してください。');
+            }
         }
     }
-
-    while($data = $out -> fetch(PDO::FETCH_ASSOC)){   //FETCH_ASSOC：連想配列で処理
-        ?>
-        <span style = "color:Red"><?php   echo(e($data['name']."　さんの投稿"));    ?></span>
-        <?php
-
-
-        echo nl2br("\n");
-        echo(nl2br(e($data['contents'])));
-        echo nl2br("\n\n");
-    }
-
-
-    $db = NULL;
-}catch(PDOException $e){
-    $db -> rollback();
-    die("エラーメッセージ：{$e -> getMessage()}");
-}
-
-
-
-
-
 
 ?>
 

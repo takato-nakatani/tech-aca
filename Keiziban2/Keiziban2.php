@@ -18,25 +18,6 @@ require_once 'Encode.php';
 </form>
 <?php
 
-    if(isset($_POST['namebox']) && isset($_POST['contribution'])){
-        if(!(empty($_POST['namebox']) || empty($_POST['contribution']))){
-
-        }
-    }
-    while($data = $out -> fetch(PDO::FETCH_ASSOC)){   //FETCH_ASSOC：連想配列で処理
-        ?>
-        <span style = "color:Red"><?php   echo(e($data['name']."　さんの投稿"));    ?></span>
-        <?php
-
-
-        echo nl2br("\n");
-        echo(nl2br(e($data['contents'])));
-        echo nl2br("\n\n");
-    }
-
-
-    $db = NULL;
-
 
 
 

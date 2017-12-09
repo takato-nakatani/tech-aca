@@ -3,6 +3,7 @@
     <title>掲示版 {$name}さん</title>
 </head>
 <form method = "POST" action = "Keiziban2.php">
+    ホーム
     <input type = 'submit' name = 'Logoutbutton' value = 'ログアウト'>
 </form>
 <form method = "POST" action = "MyContribution.php">

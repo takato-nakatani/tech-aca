@@ -10,7 +10,6 @@
     $smarty -> template_dir = dirname(__FILE__).'/KeizibanTmp/';
     $smarty -> compile_dir = dirname(__FILE__).'/KeizibanTmp_c/';
 
-
     $LoginUserId = $_SESSION['id'];
     $LoginUserData = array();
     $LoginUserData = Select_LogedIn_User_Data($LoginUserId);
@@ -48,3 +47,6 @@
 //  12/9
 //   テンプレートファイル「Keiziban2.tpl」と「Keiziban2.php」と「MyContribution.php」を完成させる。
 //　「MyContribution.php」は自分の投稿のみを閲覧することができ、自分の投稿を編集、削除することができる。
+
+// 12/10
+//  「MyContribution.php」で編集と削除ができるようにする。

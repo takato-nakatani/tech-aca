@@ -1,30 +1,50 @@
 <?php
-require_once 'DbManager2.php';
-require_once 'Encode.php';
-?>
-
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8" />
-    <title>掲示板</title>
-</head>
-<body>
-<form method = "POST" action = "Keiziban2.php">
-    <p></p>
-    <textarea name = 'contribution' cols = '75' rows = '10' maxlength = "500" wrap = "hard"></textarea><br />
-    <input type = 'submit' name = 'submitbutton' value = '投稿!!!!!'>
-
-</form>
-<?php
+    session_start();
+    require_once 'UserManager.php';
+    require_once 'PostManager.php';
+    require(dirname(__FILE__).'/libs/Smarty.class.php');
+    var_dump($_SESSION['id']);
 
 
+    $smarty = new Smarty();
+    $smarty -> template_dir = dirname(__FILE__).'/KeizibanTmp/';
+    $smarty -> compile_dir = dirname(__FILE__).'/KeizibanTmp_c/';
 
 
+    $LoginUserId = $_SESSION['id'];
+    $LoginUserData = array();
+    $LoginUserData = Select_LogedIn_User_Data($LoginUserId);
+    $user_id = $LoginUserData['id'];
+    $user_name = $LoginUserData['name'];
+
+    $smarty -> assign("name" ,$user_name);
+    $smarty -> display("Keiziban2.tpl");
 
 
 
-?>
+    if(isset($_POST['contributionbutton'])){
+        if(isset($_POST['contribution'])){
+            if(!(empty($_POST['contribution']))){
+                $PostContribution = $_POST['contribution'];
+                insert_contribution($PostContribution, $user_id);
 
-</body>
-</html>
+            }else{
+                echo("投稿文を入力してください。");
+                echo nl2br("\n\n\n");
+            }
+        }
+    }
+
+    if(isset($_POST['Logoutbutton'])){
+        session_destroy();
+        header('Location: http://localhost/selfphp2/Keiziban2/Login.php');
+    }
+
+
+    Display_Contribution();
+
+
+
+//  12/9
+//   テンプレートファイル「Keiziban2.tpl」と「Keiziban2.php」と「MyContribution.php」を完成させる。
+//　「MyContribution.php」は自分の投稿のみを閲覧することができ、自分の投稿を編集、削除することができる。

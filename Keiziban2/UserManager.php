@@ -2,14 +2,15 @@
 
 require_once 'DbManager2.php';
 
-function insert_user($sql, $user_name, $user_pass){
+function Insert_User($user_name, $user_pass){
     try{
 
         $connect = GetDb();
+        $statement = 'INSERT INTO member_table(name, password) VALUES(?, ?)';
         $connect -> beginTransaction();
-        $ins = $connect -> prepare($sql);
-        $ins -> bindValue(':username', $user_name);
-        $ins -> bindValue(':userpass', $user_pass);
+        $ins = $connect -> prepare($statement);
+        $ins -> bindValue('1', $user_name);
+        $ins -> bindValue('2', $user_pass);
         $ins -> execute();
         $connect -> commit();
     }catch(PDOException $e){
@@ -18,16 +19,6 @@ function insert_user($sql, $user_name, $user_pass){
     }
 }
 
-function Select($sql){
-    try{
-        $db = GetDb();
-        $out = $db -> prepare($sql);
-        $out -> execute();
-    }catch(PDOException $e){
-        die("SELECTエラー：{$e -> getMessage()}");
-    }
-
-}
 
 function Duplication_Check($name, $pass){
     try{
@@ -58,7 +49,7 @@ function Duplication_Check($name, $pass){
 
 
     }catch(PDOException $e){
-        die("Loginエラー：{$e -> getMessage()}");
+        die("認証エラー：{$e -> getMessage()}");
     }
 }
 
@@ -97,6 +88,29 @@ function Login_Certification($name, $pass){
     }
     }
 
+
+function Select_LogedIn_User_Data($id){
+    try{
+
+
+        $db = GetDb();
+        $statement = 'SELECT * FROM member_table WHERE id = ?';
+        $sel = $db -> prepare($statement);
+        $sel -> bindValue(1 , $id);
+        $sel -> execute();
+
+        $ResultSet = $sel -> fetchAll(PDO::FETCH_ASSOC);
+        $user_data = array();
+        foreach($ResultSet as $data){
+            $user_data = $data;
+            }
+        return $user_data;
+
+
+    }catch(PDOException $e){
+        die("Loginエラー：{$e -> getMessage()}");
+    }
+}
 
 
     //結果セットの取得

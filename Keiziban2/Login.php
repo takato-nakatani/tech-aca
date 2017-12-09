@@ -29,7 +29,6 @@
 
 
 
-
     if(isset($_POST['Loginbutton'])){
         if(isset($_POST['Loginname']) && isset($_POST['Loginpass'])){
             if(!(empty($_POST['Loginname']) || empty($_POST['Loginpass']))){

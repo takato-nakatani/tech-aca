@@ -34,8 +34,7 @@ require_once 'UserManager.php';
                 $decision = Duplication_Check($user_name, $user_pass);
                 if($decision){
                     $db = GetDB();
-                    $statement = 'INSERT INTO member_table(name, password) VALUES(:username, :userpass)';
-                    insert_user($statement, $user_name, $user_pass);
+                    Insert_User($user_name, $user_pass);
                     header('Location: http://localhost/selfphp2/Keiziban2/RegistrationCompletion.php');
                 }
 

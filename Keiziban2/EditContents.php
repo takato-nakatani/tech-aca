@@ -6,6 +6,8 @@
     require_once 'UserManager.php';
     require_once 'PostManager.php';
     require(dirname(__FILE__).'/libs/Smarty.class.php');
+    var_dump($_SESSION['id']);
+    var_dump($_SESSION['contents']);
 
 
     $smarty = new Smarty();
@@ -23,6 +25,16 @@
             Update_Contribution($contents_id, $after_edit);
             header('Location: http://localhost/selfphp2/Keiziban2/EditCompletion.php');
         }
+    }
+
+    if(isset($_POST['Logoutbutton'])){
+        session_destroy();
+        header('Location: http://localhost/selfphp2/Keiziban2/Login.php');
+    }
+
+    if(isset($_POST['backtomypagebutton'])){
+        $_SESSION['contents'] = NULL;
+        header('Location: http://localhost/selfphp2/Keiziban2/MyContribution.php');
     }
 
     $smarty -> display("Edit.tpl");

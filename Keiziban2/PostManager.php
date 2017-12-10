@@ -41,14 +41,13 @@
         }
     }
 
-    function Delete_Contribution($contents, $user_id){  //削除ボタンの際に利用
+    function Delete_Contribution($contents_id){  //削除ボタンの際に利用
         try{
             $db = GetDb();
-            $statement = 'DELETE FROM post_table WHERE contents = ? AND user_id = ?';
+            $statement = 'DELETE FROM post_table WHERE id = ? ';
             $db -> beginTransaction();
             $del = $db -> prepare($statement);
-            $del -> bindValue('1', $contents);
-            $del -> bindvalue('2', $user_id);
+            $del -> bindValue('1', $contents_id);
             $del -> execute();
             $db -> commit();
         }catch(PDOException $e){

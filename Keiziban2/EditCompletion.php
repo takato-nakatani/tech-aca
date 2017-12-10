@@ -9,8 +9,17 @@
 </head>
 <body>
 <p>投稿文の編集が完了しました。</p>
-<form method = "POST" action = "MyContribution.php">
+<form method = "POST" action = "EditCompletion.php">
     <input type = "submit" name = "backtomypage" value = "マイページに戻る">
 </form>
+<?php
+    session_start();
+    var_dump($_SESSION['id']);
+    var_dump($_SESSION['contents']);
+    if(isset($_POST['backtomypage'])){
+        $_SESSION['contents'] = NULL;
+        header('Location: http://localhost/selfphp2/Keiziban2/MyContribution.php');
+    }
+?>
 </body>
 </html>

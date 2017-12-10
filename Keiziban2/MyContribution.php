@@ -6,7 +6,8 @@
     require_once 'UserManager.php';
     require_once 'PostManager.php';
     require(dirname(__FILE__).'/libs/Smarty.class.php');
-
+    var_dump($_SESSION['id']);
+    var_dump($_SESSION['contents']);
 
     $smarty = new Smarty();
     $smarty -> template_dir = dirname(__FILE__).'/KeizibanTmp/';
@@ -37,10 +38,18 @@
     $smarty -> assign('fetchAll', $fetchAll);
 
 
-    for ($i = 1; $i < count($fetchAll[0]); $i++){
+    for ($i = 1; $i < count($fetchAll[0]); $i++){    //投稿文の数だけfor文でループ
         if(isset($_POST["editbutton{$i}"])){   //どのボタンが押されたか
-            $contents_id = $_POST["hiddeneditbutton{$i}"];  //押されたボタンのhiddenから投稿文のidを取得
+            $contents_id = $_POST["contents_id{$i}"];  //押されたボタンのhiddenから投稿文のidを取得
             editbutton($contents_id);   //投稿文のidをセッションで保持して編集画面へ移動する関数
+        }
+    }
+
+
+    for ($i = 1; $i < count($fetchAll[0]); $i++){
+        if(isset($_POST["deletebutton{$i}"])){   //どのボタンが押されたか
+            $contents_id = $_POST["contents_id{$i}"];  //押されたボタンと投稿文のidを紐づけたhiddenから投稿文のidを取得
+            Delete_Contribution($contents_id);   //投稿文を削除する関数
         }
     }
 

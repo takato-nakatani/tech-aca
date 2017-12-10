@@ -1,9 +1,9 @@
 <html>
 <head>
-    <title>掲示版 {$name}さん</title>
+    <title>ホーム {$name}さん</title>
 </head>
 <form method = "POST" action = "Keiziban2.php">
-    ホーム
+    <p>{$name}　さん</p>
     <input type = 'submit' name = 'Logoutbutton' value = 'ログアウト'>
 </form>
 <form method = "POST" action = "MyContribution.php">

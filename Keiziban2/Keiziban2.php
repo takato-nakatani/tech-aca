@@ -1,9 +1,12 @@
 <?php
+    //----------　掲示板のホーム画面(投稿したり、みんなの投稿を見たりすることができるページ)　----------
+
+
+
     session_start();
     require_once 'UserManager.php';
     require_once 'PostManager.php';
     require(dirname(__FILE__).'/libs/Smarty.class.php');
-    var_dump($_SESSION['id']);
 
 
     $smarty = new Smarty();
@@ -24,6 +27,7 @@
     if(isset($_POST['contributionbutton'])){
         if(isset($_POST['contribution'])){
             if(!(empty($_POST['contribution']))){
+
                 $PostContribution = $_POST['contribution'];
                 insert_contribution($PostContribution, $user_id);
 

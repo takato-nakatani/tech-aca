@@ -1,3 +1,6 @@
+<!--　登録完了画面　-->
+
+
 <!DOCTYPE html>
 <html>
 <head>

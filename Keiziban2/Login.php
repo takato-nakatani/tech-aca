@@ -1,4 +1,6 @@
 <?php
+    //----------　ログイン画面　----------
+
     session_start();
     require_once 'DbManager2.php';
     require_once 'Encode.php';
@@ -30,13 +32,18 @@
 
 
     if(isset($_POST['Loginbutton'])){
+
         if(isset($_POST['Loginname']) && isset($_POST['Loginpass'])){
+
             if(!(empty($_POST['Loginname']) || empty($_POST['Loginpass']))){
+
                 $LoginName = $_POST['Loginname'];
                 $LoginPass = $_POST['Loginpass'];
-                $decision = Login_Certification($LoginName, $LoginPass);
+
+                $decision = Login_Certification($LoginName, $LoginPass);  //ログインの認証
+
                 if($decision){
-                    header('Location: http://localhost/selfphp2/Keiziban2/Keiziban2.php');
+                    header('Location: http://localhost/selfphp2/Keiziban2/Keiziban2.php');  //ログイン後のページ
                 }else{
                     echo('ユーザ名またはパスワードが間違っています。');
                 }

@@ -15,6 +15,7 @@
 </head>
 <body>
 <form method = "POST" action = "Login.php">
+    <p>掲示板</p>
     <label>ユーザ名(半角英数字２字以上２０字以内)：</label>
     <input id = 'nametextbox' type = 'text' name = 'Loginname' size = '20' maxlength="20"><br />
 
@@ -39,13 +40,18 @@
 
                 $LoginName = $_POST['Loginname'];
                 $LoginPass = $_POST['Loginpass'];
+                if(!preg_match('/^[0-9a-zA-Z]{2,20}$/', $LoginName)) {
+                    print("ユーザ名は半角英数字２字以上２０字以下で入力してください。");
+                }else if(!preg_match('/^[0-9a-zA-Z]{8,30}$/', $LoginPass)){
+                    print("パスワードは半角英数字８字以上３０字以下で入力してください。");
+                }else {
+                    $decision = Login_Certification($LoginName, $LoginPass);  //ログインの認証
 
-                $decision = Login_Certification($LoginName, $LoginPass);  //ログインの認証
-
-                if($decision){
-                    header('Location: http://localhost/selfphp2/Keiziban2/Keiziban2.php');  //ログイン後のページ
-                }else{
-                    echo('ユーザ名またはパスワードが間違っています。');
+                    if ($decision) {
+                        header('Location: http://localhost/selfphp2/Keiziban2/Keiziban2.php');  //ログイン後のページ
+                    } else {
+                        echo('ユーザ名またはパスワードが間違っています。');
+                    }
                 }
 
 

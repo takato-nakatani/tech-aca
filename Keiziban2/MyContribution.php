@@ -6,8 +6,6 @@
     require_once 'UserManager.php';
     require_once 'PostManager.php';
     require(dirname(__FILE__).'/libs/Smarty.class.php');
-    var_dump($_SESSION['id']);
-    var_dump($_SESSION['contents']);
 
     $smarty = new Smarty();
     $smarty -> template_dir = dirname(__FILE__).'/KeizibanTmp/';

@@ -14,8 +14,7 @@
 </form>
 <?php
     session_start();
-    var_dump($_SESSION['id']);
-    var_dump($_SESSION['contents']);
+
     if(isset($_POST['backtomypage'])){
         $_SESSION['contents'] = NULL;
         header('Location: http://localhost/selfphp2/Keiziban2/MyContribution.php');

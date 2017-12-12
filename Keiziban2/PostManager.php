@@ -66,10 +66,10 @@
             if(!(empty($fetchAll))){
                 foreach($fetchAll as $data){
                     $name = e($data['name']);
-                    $contents = e($data['contents']);
+                    $contents = $data['contents'];
                     $time = $data['time'];
                     print("{$name}　さんの投稿　");
-                    echo($time);
+                    echo("<".$time.">");
                     echo nl2br("\n");
                     echo(nl2br(e($contents)));
                     echo nl2br("\n\n");

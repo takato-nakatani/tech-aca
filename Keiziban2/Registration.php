@@ -4,6 +4,7 @@
     require_once 'DbManager2.php';
     require_once 'Encode.php';
     require_once 'UserManager.php';
+
 ?>
 
 <!DOCTYPE html>

@@ -50,6 +50,7 @@
         if(isset($_POST["deletebutton{$i}"])){   //どのボタンが押されたか
             $contents_id = $_POST["contents_id{$i}"];  //押されたボタンと投稿文のidを紐づけたhiddenから投稿文のidを取得
             Delete_Contribution($contents_id);   //投稿文を削除する関数
+            header('Location: http://localhost/selfphp2/Keiziban2/MyContribution.php');
         }
     }
 

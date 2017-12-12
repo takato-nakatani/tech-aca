@@ -22,7 +22,12 @@
     if(isset($_POST['editcompletebutton'])) {
         if(!(empty($_POST['contribution']))){
             $after_edit = $_POST['contribution'];
-            Update_Contribution($contents_id, $after_edit);
+            if(mb_strlen($after_edit) > 100){
+                print('100字以内で入力してください。');
+            }else{
+                Update_Contribution($contents_id, $after_edit);
+            }
+
             header('Location: http://localhost/selfphp2/Keiziban2/EditCompletion.php');
         }
     }

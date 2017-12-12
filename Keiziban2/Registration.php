@@ -16,11 +16,11 @@
 <form method = "POST" action = "Registration.php">
 
     <p>以下のフォームに従って＜ユーザ名＞と＜パスワード＞を設定してください</p>
-    <label>ユーザ名(半角英数字20文字以内)：</label>
-    <input id = 'username' type = 'text' name = 'username' size = '30'><br />
+    <label>ユーザ名(半角英数字２字以上２０字以内)：</label>
+    <input id = 'username' type = 'text' name = 'username' size = '30' maxlength="20"><br />
 
-    <label>パスワード(半角英数字30文字以内)：</label>
-    <input id = 'userpass' type = 'text' name = 'userpass' size = '30'><br />
+    <label>パスワード(半角英数字８字以上３０字以内)：</label>
+    <input id = 'userpass' type = 'text' name = 'userpass' size = '30' maxlength="30"><br />
     <input type = 'submit' name = 'Registrationbutton' value = '登録'>
 
 </form>
@@ -31,13 +31,23 @@
     if(isset($_POST['Registrationbutton'])){
         if(isset($_POST['username']) && isset($_POST['userpass'])){
             if(!(empty($_POST['username']) || empty($_POST['userpass']))){
+
                 $user_name = $_POST['username'];
                 $user_pass = $_POST['userpass'];
-                $decision = Duplication_Check($user_name, $user_pass);
-                if($decision){
-                    $db = GetDB();
-                    Insert_User($user_name, $user_pass);
-                    header('Location: http://localhost/selfphp2/Keiziban2/RegistrationCompletion.php');
+
+                if(!preg_match('/^[0-9a-zA-Z]{2,20}$/', $user_name)) {
+                    print("ユーザ名は半角英数字２字以上２０字以下で入力してください。");
+                }else if(!preg_match('/^[0-9a-zA-Z]{8,30}$/', $user_pass)){
+                    print("パスワードは半角英数字８字以上３０字以下で入力してください。");
+                }else{
+
+                    $decision = Duplication_Check($user_name, $user_pass);
+                    if($decision){
+                        $db = GetDB();
+                        Insert_User($user_name, $user_pass);
+                        header('Location: http://localhost/selfphp2/Keiziban2/RegistrationCompletion.php');
+                    }
+
                 }
 
             }else if(empty($_POST['username']) && empty($_POST['userpass'])){

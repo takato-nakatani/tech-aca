@@ -30,7 +30,12 @@
             if(!(empty($_POST['contribution']))){
 
                 $PostContribution = $_POST['contribution'];
-                insert_contribution($PostContribution, $user_id);
+                if(mb_strlen($PostContribution) > 100){
+                    print('100字以内で入力してください。');
+                }else{
+                    insert_contribution($PostContribution, $user_id);
+                }
+
 
             }else{
                 echo("投稿文を入力してください。");
